@@ -11,13 +11,6 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset = new Vector3(0, 5, -10);
     public float smoothSpeed = 5f;
 
-    [Header("Rotation Settings - Mouse Move")]
-    public bool useMouseMoveRotation = true;
-    //public bool requireKeyForMouseRotation = false;
-    //public KeyCode mouseMoveKey = KeyCode.W;
-    public float mouseMoveXSensitivity = 2f;
-    public float mouseMoveYSensitivity = 2f;
-
     [Header("Rotation Settings - Right Click")]
     public bool useRightClickRotation = true;
     public float rightClickXSpeed = 200f;
@@ -79,35 +72,6 @@ public class CameraFollow : MonoBehaviour
             y -= Input.GetAxis("Mouse Y") * rightClickYSpeed * 0.02f;
             y = ClampAngle(y, yMinLimit, yMaxLimit);
             isRotating = true;
-        }
-
-        if (useMouseMoveRotation)
-        {
-            //bool canRotate = !requireKeyForMouseRotation || Input.GetKey(mouseMoveKey);
-
-            //if (canRotate)
-            //{
-            //    float mouseX = Input.GetAxis("Mouse X");
-            //    float mouseY = Input.GetAxis("Mouse Y");
-
-            //    if (Mathf.Abs(mouseX) > 0.01f || Mathf.Abs(mouseY) > 0.01f)
-            //    {
-            //        x += mouseX * mouseMoveXSensitivity;
-            //        y -= mouseY * mouseMoveYSensitivity;
-            //        y = ClampAngle(y, yMinLimit, yMaxLimit);
-            //        isRotating = true;
-            //    }
-            //}
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
-
-            if (Mathf.Abs(mouseX) > 0.01f || Mathf.Abs(mouseY) > 0.01f)
-            {
-                x += mouseX * mouseMoveXSensitivity;
-                y -= mouseY * mouseMoveYSensitivity;
-                y = ClampAngle(y, yMinLimit, yMaxLimit);
-                isRotating = true;
-            }
         }
 
         distance -= Input.GetAxis("Mouse ScrollWheel") * zoomSpeed;

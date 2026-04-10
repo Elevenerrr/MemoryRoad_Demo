@@ -6,10 +6,10 @@ using UnityEngine.Events;
 public enum InteractableType
 {
     None,
-    Photo,       // 标识1: 拍照
-    Vision,      // 标识2: 视觉穿墙
-    Audio,       // 标识3: 录音驱赶
-    Overlay      // 标识4: 覆盖选择
+    Photo,
+    Vision,
+    Audio,
+    Overlay
 }
 
 public class InteractableObject : MonoBehaviour
@@ -19,6 +19,10 @@ public class InteractableObject : MonoBehaviour
     public InteractableType interactType = InteractableType.None;
     public string displayName;
 
+    [Header("Interaction Range")]
+    public float interactionRange = 3f;
+    public bool showRangeIndicator = true;
+
     [Header("Interaction Settings")]
     public bool canInteract = true;
     public float interactionCooldown = 0.5f;
@@ -26,6 +30,11 @@ public class InteractableObject : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent OnInteracted;
+    public UnityEvent OnPlayerEnterRange;
+    public UnityEvent OnPlayerExitRange;
+
+    private Transform playerTransform;
+    private bool isPlayerInRange = false;
 
     protected virtual void Start()
     {
@@ -33,11 +42,39 @@ public class InteractableObject : MonoBehaviour
         {
             objectId = gameObject.name;
         }
+
+        playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+    }
+
+    void Update()
+    {
+        if (playerTransform == null) return;
+
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+        bool wasInRange = isPlayerInRange;
+        isPlayerInRange = distance <= interactionRange;
+
+        if (isPlayerInRange && !wasInRange)
+        {
+            OnPlayerEnterRange?.Invoke();
+            Debug.Log($"[交互提示] 靠近 {displayName} - 可交互!");
+        }
+        else if (!isPlayerInRange && wasInRange)
+        {
+            OnPlayerExitRange?.Invoke();
+            Debug.Log($"[交互提示] 离开 {displayName}");
+        }
     }
 
     public virtual void OnInteract()
     {
         if (!canInteract) return;
+
+        if (!isPlayerInRange)
+        {
+            Debug.Log($"[交互] {displayName} 距离太远，无法交互");
+            return;
+        }
 
         if (Time.time - lastInteractTime < interactionCooldown) return;
 
@@ -47,13 +84,9 @@ public class InteractableObject : MonoBehaviour
         Debug.Log($"[交互] {displayName} ({interactType}) 被触发");
     }
 
-    public virtual void OnPlayerEnterRange()
+    void OnDrawGizmosSelected()
     {
-        Debug.Log($"[交互提示] 靠近 {displayName}");
-    }
-
-    public virtual void OnPlayerExitRange()
-    {
-        Debug.Log($"[交互提示] 离开 {displayName}");
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactionRange);
     }
 }

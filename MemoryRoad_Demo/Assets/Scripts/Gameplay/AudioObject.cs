@@ -6,8 +6,8 @@ public class AudioObject : InteractableObject
     [Header("Audio Settings")]
     public AudioSource audioSource;
     public AudioClip audioClip;
-    public string targetTag = "NPCAway";
-    public float moveAwayDistance = 10f;
+    public string npcTag = "NPCAway";
+    public string playAwayTrigger = "playMusicAway";
 
     protected override void Start()
     {
@@ -27,11 +27,10 @@ public class AudioObject : InteractableObject
     public override void OnInteract()
     {
         base.OnInteract();
-
-        PlayAudioAndMoveNPCs();
+        PlayAudioAndTriggerNPC();
     }
 
-    void PlayAudioAndMoveNPCs()
+    void PlayAudioAndTriggerNPC()
     {
         if (audioSource != null && audioClip != null)
         {
@@ -43,43 +42,23 @@ public class AudioObject : InteractableObject
             Debug.Log("[音频] 播放录音 (无音频文件)");
         }
 
-        GameObject[] npcs = GameObject.FindGameObjectsWithTag(targetTag);
+        GameObject[] npcs = GameObject.FindGameObjectsWithTag(npcTag);
         foreach (GameObject npc in npcs)
         {
             float distance = Vector3.Distance(transform.position, npc.transform.position);
             if (distance < 15f)
             {
-                StartCoroutine(MoveNPCAway(npc.transform));
+                Animator animator = npc.GetComponent<Animator>();
+                if (animator != null)
+                {
+                    animator.SetTrigger(playAwayTrigger);
+                    Debug.Log($"[NPC] 触发动画: {playAwayTrigger} on {npc.name}");
+                }
+                else
+                {
+                    Debug.LogWarning($"[NPC] {npc.name} 没有 Animator 组件");
+                }
             }
-        }
-    }
-
-    IEnumerator MoveNPCAway(Transform npc)
-    {
-        Vector3 awayDirection = (npc.position - transform.position).normalized;
-        awayDirection.y = 0;
-        awayDirection.Normalize();
-
-        Vector3 targetPosition = npc.position + awayDirection * moveAwayDistance;
-
-        float duration = 2f;
-        float elapsed = 0f;
-        Vector3 startPosition = npc.position;
-
-        while (elapsed < duration)
-        {
-            if (npc != null)
-            {
-                npc.position = Vector3.Lerp(startPosition, targetPosition, elapsed / duration);
-                elapsed += Time.deltaTime;
-                yield return null;
-            }
-        }
-
-        if (npc != null)
-        {
-            npc.position = targetPosition;
-            Debug.Log($"[NPC] 远离到: {targetPosition}");
         }
     }
 }

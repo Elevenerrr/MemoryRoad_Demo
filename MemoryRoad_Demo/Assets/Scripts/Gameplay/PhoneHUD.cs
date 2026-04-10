@@ -9,15 +9,9 @@ public class PhoneHUD : MonoBehaviour
     [Header("Phone UI")]
     public GameObject phoneUIRoot;
     public Image functionIcon1;
-    public Image functionIcon2;
     public Image functionIcon3;
     public Image functionIcon4;
     public TextMeshProUGUI statusText;
-
-    [Header("Camera Frame UI")]
-    public GameObject cameraFrame;
-    public Image frameBorder;
-    public TextMeshProUGUI frameHintText;
 
     [Header("Visual Feedback")]
     public Image screenFlash;
@@ -29,18 +23,9 @@ public class PhoneHUD : MonoBehaviour
     public Sprite iconVision;
     public Sprite iconAudio;
     public Sprite iconOverlay;
-    public Sprite iconUnknown;
-
-    [Header("Frame Colors")]
-    public Color photoFrameColor = new Color(0f, 1f, 0f, 0.8f);
-    public Color visionFrameColor = new Color(0f, 0.5f, 1f, 0.8f);
-    public Color audioFrameColor = new Color(1f, 0.5f, 0f, 0.8f);
-    public Color overlayFrameColor = new Color(1f, 0f, 1f, 0.8f);
-    public Color noTargetColor = new Color(1f, 1f, 1f, 0.3f);
 
     private CanvasGroup canvasGroup;
     private bool isVisible = false;
-    private InteractableObject lastTarget;
 
     void Start()
     {
@@ -51,7 +36,6 @@ public class PhoneHUD : MonoBehaviour
         }
 
         HidePhoneUI();
-        HideCameraFrame();
 
         if (PhoneManager.Instance != null)
         {
@@ -73,7 +57,6 @@ public class PhoneHUD : MonoBehaviour
     {
         Debug.Log("[HUD] 手机卸下");
         HidePhoneUI();
-        HideCameraFrame();
     }
 
     void OnPhoneActivated()
@@ -86,7 +69,6 @@ public class PhoneHUD : MonoBehaviour
     {
         SetFunctionIcons(false);
         UpdateStatus("手机息屏");
-        HideCameraFrame();
     }
 
     void OnPhotoTaken()
@@ -107,62 +89,6 @@ public class PhoneHUD : MonoBehaviour
         phoneUIRoot.SetActive(false);
     }
 
-    void ShowCameraFrame(InteractableObject target)
-    {
-        if (cameraFrame == null) return;
-
-        cameraFrame.SetActive(true);
-
-        Color frameColor = noTargetColor;
-        string hintText = "未对准可交互物体";
-        Sprite icon = iconUnknown;
-
-        if (target != null)
-        {
-            switch (target.interactType)
-            {
-                case InteractableType.Photo:
-                    frameColor = photoFrameColor;
-                    hintText = "📷 按1 拍照";
-                    icon = iconPhoto;
-                    break;
-                case InteractableType.Vision:
-                    frameColor = visionFrameColor;
-                    hintText = "👁️ 按1 穿墙";
-                    icon = iconVision;
-                    break;
-                case InteractableType.Audio:
-                    frameColor = audioFrameColor;
-                    hintText = "🔊 按3 播放录音";
-                    icon = iconAudio;
-                    break;
-                case InteractableType.Overlay:
-                    frameColor = overlayFrameColor;
-                    hintText = "🖼️ 按4 选择照片";
-                    icon = iconOverlay;
-                    break;
-            }
-        }
-
-        if (frameBorder != null)
-        {
-            frameBorder.color = frameColor;
-        }
-
-        if (frameHintText != null)
-        {
-            frameHintText.text = hintText;
-        }
-    }
-
-    void HideCameraFrame()
-    {
-        if (cameraFrame != null)
-        {
-            cameraFrame.SetActive(false);
-        }
-    }
-
     void SetFunctionIcons(bool active)
     {
         Color iconColor = active ? Color.white : Color.gray;
@@ -171,11 +97,6 @@ public class PhoneHUD : MonoBehaviour
         {
             functionIcon1.sprite = iconPhoto;
             functionIcon1.color = iconColor;
-        }
-        if (functionIcon2 != null)
-        {
-            functionIcon2.sprite = iconVision;
-            functionIcon2.color = iconColor;
         }
         if (functionIcon3 != null)
         {
@@ -224,21 +145,6 @@ public class PhoneHUD : MonoBehaviour
         {
             int photoCount = PhoneManager.Instance.GetPhotoCount();
             UpdateStatus($"已拍摄: {photoCount} 张");
-
-            InteractableObject currentTarget = PhoneManager.Instance.currentTarget;
-
-            if (currentTarget != lastTarget)
-            {
-                lastTarget = currentTarget;
-                if (currentTarget != null)
-                {
-                    ShowCameraFrame(currentTarget);
-                }
-                else
-                {
-                    ShowCameraFrame(null);
-                }
-            }
         }
     }
 }
