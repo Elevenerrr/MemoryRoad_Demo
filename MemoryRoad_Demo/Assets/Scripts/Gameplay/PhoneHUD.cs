@@ -11,7 +11,6 @@ public class PhoneHUD : MonoBehaviour
     public Image functionIcon1;
     public Image functionIcon3;
     public Image functionIcon4;
-    public TextMeshProUGUI statusText;
 
     [Header("Visual Feedback")]
     public Image screenFlash;
@@ -62,13 +61,11 @@ public class PhoneHUD : MonoBehaviour
     void OnPhoneActivated()
     {
         SetFunctionIcons(true);
-        UpdateStatus("手机功能已开启");
     }
 
     void OnPhoneDeactivated()
     {
         SetFunctionIcons(false);
-        UpdateStatus("手机息屏");
     }
 
     void OnPhotoTaken()
@@ -110,14 +107,6 @@ public class PhoneHUD : MonoBehaviour
         }
     }
 
-    void UpdateStatus(string text)
-    {
-        if (statusText != null)
-        {
-            statusText.text = text;
-        }
-    }
-
     IEnumerator FlashScreen()
     {
         if (screenFlash == null) yield break;
@@ -135,16 +124,5 @@ public class PhoneHUD : MonoBehaviour
         }
 
         screenFlash.gameObject.SetActive(false);
-    }
-
-    void Update()
-    {
-        if (PhoneManager.Instance == null) return;
-
-        if (PhoneManager.Instance.isPhoneActive)
-        {
-            int photoCount = PhoneManager.Instance.GetPhotoCount();
-            UpdateStatus($"已拍摄: {photoCount} 张");
-        }
     }
 }

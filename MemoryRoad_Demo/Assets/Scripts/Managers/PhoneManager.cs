@@ -11,12 +11,18 @@ public class PhoneManager : MonoBehaviour
     public float autoLockTime = 5f;
     public float interactionDistance = 3f;
 
+    [Header("Idle Timeout Settings")]
+    public float idleTimeout = 10f;
+    public bool idleTimeoutEnabled = true;
+
     [Header("Phone State")]
     public bool isPhoneEquipped = false;
     public bool isPhoneActive = false;
     public bool isInventoryOpen = false;
     public bool isDialogueOpen = false;
     public float lastInteractionTime;
+    private float lastIdleCheckTime;
+    private bool isIdleTimerPaused = false;
 
     [Header("Current Target")]
     public InteractableObject currentTarget;
@@ -43,15 +49,20 @@ public class PhoneManager : MonoBehaviour
         playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
         phoneHUD = FindObjectOfType<PhoneHUD>();
         lastInteractionTime = Time.time;
+        lastIdleCheckTime = Time.time;
         Debug.Log("[PhoneManager] 已启动");
     }
 
     void Update()
     {
-        if (isInventoryOpen || isDialogueOpen) return;
+        if (isInventoryOpen || isDialogueOpen)
+        {
+            return;
+        }
 
         HandleInput();
         CheckAutoLock();
+        CheckIdleTimeout();
         UpdateNearbyObjects();
     }
 
@@ -64,8 +75,6 @@ public class PhoneManager : MonoBehaviour
         }
 
         if (!isPhoneActive) return;
-
-        lastInteractionTime = Time.time;
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -91,6 +100,35 @@ public class PhoneManager : MonoBehaviour
             Debug.Log($"[PhoneManager] 息屏了！闲置时间: {idleTime:F1}秒");
             DeactivatePhone();
         }
+    }
+
+    void CheckIdleTimeout()
+    {
+        if (!idleTimeoutEnabled || !isPhoneEquipped || isIdleTimerPaused) return;
+
+        float idleTime = Time.time - lastIdleCheckTime;
+        if (idleTime > idleTimeout)
+        {
+            Debug.Log($"[PhoneManager] 闲置超时 ({idleTimeout:F1}秒)，退出手机模式！");
+            ForceUnequipPhone();
+        }
+    }
+
+    void ResetIdleTimer()
+    {
+        lastIdleCheckTime = Time.time;
+        lastInteractionTime = Time.time;
+    }
+
+    void ForceUnequipPhone()
+    {
+        isPhoneEquipped = false;
+        isPhoneActive = false;
+        isIdleTimerPaused = false;
+        currentTarget = null;
+        OnPhoneUnequipped?.Invoke();
+        OnPhoneDeactivated?.Invoke();
+        Debug.Log("[PhoneManager] 因闲置超时，强制退出手机模式");
     }
 
     void UpdateNearbyObjects()
@@ -120,18 +158,24 @@ public class PhoneManager : MonoBehaviour
 
     void TogglePhoneEquip()
     {
-        isPhoneEquipped = !isPhoneEquipped;
-        Debug.Log($"[PhoneManager] 手机装备状态: {isPhoneEquipped}");
-
-        if (isPhoneEquipped)
+        if (isPhoneEquipped && isPhoneActive)
         {
-            OnPhoneEquipped?.Invoke();
+            isPhoneEquipped = false;
+            OnPhoneUnequipped?.Invoke();
+            DeactivatePhone();
+            Debug.Log("[PhoneManager] 卸下手机");
+        }
+        else if (isPhoneEquipped && !isPhoneActive)
+        {
             ActivatePhone();
+            Debug.Log("[PhoneManager] 重新激活手机");
         }
         else
         {
-            OnPhoneUnequipped?.Invoke();
-            DeactivatePhone();
+            isPhoneEquipped = true;
+            OnPhoneEquipped?.Invoke();
+            ActivatePhone();
+            Debug.Log("[PhoneManager] 装备手机");
         }
     }
 
@@ -139,6 +183,8 @@ public class PhoneManager : MonoBehaviour
     {
         isPhoneActive = true;
         lastInteractionTime = Time.time;
+        lastIdleCheckTime = Time.time;
+        isIdleTimerPaused = false;
         OnPhoneActivated?.Invoke();
         Debug.Log("[PhoneManager] 手机已激活");
     }
@@ -154,24 +200,30 @@ public class PhoneManager : MonoBehaviour
     public void OpenInventory()
     {
         isInventoryOpen = true;
+        isIdleTimerPaused = true;
         Debug.Log("[PhoneManager] 打开背包");
     }
 
     public void CloseInventory()
     {
         isInventoryOpen = false;
+        isIdleTimerPaused = false;
+        ResetIdleTimer();
         Debug.Log("[PhoneManager] 关闭背包");
     }
 
     public void OpenDialogue()
     {
         isDialogueOpen = true;
+        isIdleTimerPaused = true;
         Debug.Log("[PhoneManager] 对话开启");
     }
 
     public void CloseDialogue()
     {
         isDialogueOpen = false;
+        isIdleTimerPaused = false;
+        ResetIdleTimer();
         Debug.Log("[PhoneManager] 对话结束");
     }
 
@@ -195,6 +247,7 @@ public class PhoneManager : MonoBehaviour
                     Debug.Log($"[手机] 拍照成功: {photoId}");
                     currentTarget.OnInteract();
                     OnPhotoTaken?.Invoke();
+                    ResetIdleTimer();
                 }
             }
             else
@@ -207,6 +260,7 @@ public class PhoneManager : MonoBehaviour
             Debug.Log($"[手机] 触发闪光穿墙: {currentTarget.objectId}");
             currentTarget.OnInteract();
             OnPhotoTaken?.Invoke();
+            ResetIdleTimer();
         }
         else
         {
@@ -227,6 +281,7 @@ public class PhoneManager : MonoBehaviour
             currentTarget.OnInteract();
             Debug.Log($"[手机] 播放录音: {currentTarget.objectId}");
             OnAudioPlayed?.Invoke();
+            ResetIdleTimer();
         }
         else
         {
@@ -246,6 +301,7 @@ public class PhoneManager : MonoBehaviour
         {
             currentTarget.OnInteract();
             Debug.Log($"[手机] 触发覆盖选择: {currentTarget.objectId}");
+            ResetIdleTimer();
         }
         else
         {
