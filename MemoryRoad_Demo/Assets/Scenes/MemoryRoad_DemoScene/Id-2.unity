@@ -158,8 +158,8 @@ Transform:
   m_Children:
   - {fileID: 1363857827}
   - {fileID: 1862352990}
-  - {fileID: 1748683239}
   - {fileID: 1489303501}
+  - {fileID: 1748683239}
   - {fileID: 1039495095}
   m_Father: {fileID: 1427524653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2319,7 +2319,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 817fc325572dae441af15b296ff137c7, type: 2}
+  - {fileID: 2100000, guid: 371e992bdf6ddd84596ec76f5acb5687, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3779,6 +3779,7 @@ GameObject:
   - component: {fileID: 234050171}
   - component: {fileID: 234050170}
   - component: {fileID: 234050169}
+  - component: {fileID: 234050172}
   m_Layer: 0
   m_Name: "\u6728\u677F2\uFF08\u53EF\u62CD\u6444\uFF09"
   m_TagString: Untagged
@@ -3872,6 +3873,34 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 234050167}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &234050172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234050167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7d338536dc2dd4295924919f9a783b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectId: wood
+  interactType: 1
+  displayName: "\u62CD\u7167\u70B9-\u6728\u677F"
+  interactionRange: 3
+  showRangeIndicator: 1
+  canInteract: 1
+  interactionCooldown: 0.5
+  OnInteracted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerEnterRange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerExitRange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &239300387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4048,8 +4077,8 @@ Transform:
   m_GameObject: {fileID: 242820762}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 84.2, y: 0, z: 0}
+  m_LocalScale: {x: 0.85, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1576562998}
@@ -4665,6 +4694,7 @@ GameObject:
   - component: {fileID: 277131034}
   - component: {fileID: 277131033}
   - component: {fileID: 277131032}
+  - component: {fileID: 277131035}
   m_Layer: 0
   m_Name: "\u65AD\u88C2\u7684\u6728\u677F1.1"
   m_TagString: Untagged
@@ -4758,6 +4788,48 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277131030}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &277131035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277131030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58142967a115d849a8393f1258c0a06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectId: wood
+  interactType: 4
+  displayName: "\u6728\u677F-\u53EF\u8986\u76D6"
+  interactionRange: 3
+  showRangeIndicator: 1
+  canInteract: 1
+  interactionCooldown: 5
+  OnInteracted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerEnterRange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerExitRange:
+    m_PersistentCalls:
+      m_Calls: []
+  correctPhotoId: wood
+  inventoryUI: {fileID: 0}
+  photoDisplayObject: {fileID: 1363857826}
+  successRevealObject: {fileID: 1363857826}
+  hideOnSuccessObject: {fileID: 0}
+  dialogueSystem: {fileID: 0}
+  successDialogue:
+  - speakerName: ???
+    dialogueText: "\u53EF\u4EE5\u8D70\u4E86\u8BF6\uFF01"
+    displayDuration: 3
+  portalObject: {fileID: 277131030}
+  wallCollider: {fileID: 277131032}
+  targetSceneName: Id-2
+  fadeDuration: 1
 --- !u!1001 &277528691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9924,6 +9996,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1030355175451754405, guid: c6713b7234e1dff469136e750a468ad4, type: 3}
   m_PrefabInstance: {fileID: 532407938}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &539204166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 539204167}
+  m_Layer: 0
+  m_Name: PlayerSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &539204167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539204166}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.555, y: 0, z: -5.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1427524653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &553409601
 GameObject:
   m_ObjectHideFlags: 0
@@ -11800,7 +11903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6798120375440651205, guid: 1e88f3b4c5f12ae4db11f88b8726826a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -6798120375440651205, guid: 1e88f3b4c5f12ae4db11f88b8726826a, type: 3}
       propertyPath: m_TagString
@@ -11936,6 +12039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
+  rotationSpeed: 10
 --- !u!95 &689745424
 Animator:
   serializedVersion: 5
@@ -14233,13 +14337,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 835724249}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.34564504, w: 0.9383654}
-  m_LocalPosition: {x: 512.84015, y: 8.15, z: -5}
-  m_LocalScale: {x: 51.695858, y: 0.67525727, z: 16.734514}
+  m_LocalRotation: {x: 0.000000014901159, y: -0, z: 0.26882538, w: 0.96318895}
+  m_LocalPosition: {x: 511.7, y: 7.4, z: -5}
+  m_LocalScale: {x: 49.07746, y: 0.67525727, z: 16.734514}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1039495095}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 40.442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 31.189}
 --- !u!65 &835724251
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15265,6 +15369,7 @@ GameObject:
   - component: {fileID: 907745987}
   - component: {fileID: 907745986}
   - component: {fileID: 907745985}
+  - component: {fileID: 907745988}
   m_Layer: 0
   m_Name: "\u65AD\u88C2\u7684\u6728\u677F3.1"
   m_TagString: Untagged
@@ -15358,6 +15463,45 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907745983}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &907745988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907745983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e58142967a115d849a8393f1258c0a06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectId: wood
+  interactType: 4
+  displayName: "\u6728\u677F-\u8986\u76D6\u65AD\u88C2"
+  interactionRange: 3
+  showRangeIndicator: 1
+  canInteract: 1
+  interactionCooldown: 0.5
+  OnInteracted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerEnterRange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPlayerExitRange:
+    m_PersistentCalls:
+      m_Calls: []
+  correctPhotoId: wood
+  inventoryUI: {fileID: 0}
+  photoDisplayObject: {fileID: 0}
+  successRevealObject: {fileID: 0}
+  hideOnSuccessObject: {fileID: 0}
+  dialogueSystem: {fileID: 0}
+  successDialogue: []
+  portalObject: {fileID: 0}
+  wallCollider: {fileID: 0}
+  targetSceneName: Id-4
+  fadeDuration: 1
 --- !u!4 &912145766 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030355175451754405, guid: c6713b7234e1dff469136e750a468ad4, type: 3}
@@ -16946,7 +17090,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1039495095}
-  - component: {fileID: 1039495096}
   m_Layer: 0
   m_Name: "\u65AD\u88C2\u7684\u6728\u677F3\uFF08\u53EF\u8986\u76D6\uFF09"
   m_TagString: Untagged
@@ -16971,43 +17114,6 @@ Transform:
   - {fileID: 835724250}
   m_Father: {fileID: 4459568}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1039495096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1039495094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e58142967a115d849a8393f1258c0a06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectId: "\u6728\u677F3"
-  interactType: 0
-  displayName: "\u53EF\u8986\u76D6"
-  interactionRange: 3
-  showRangeIndicator: 1
-  canInteract: 1
-  interactionCooldown: 0.5
-  OnInteracted:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPlayerEnterRange:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPlayerExitRange:
-    m_PersistentCalls:
-      m_Calls: []
-  correctPhotoId: 
-  inventoryUI: {fileID: 0}
-  photoDisplayObject: {fileID: 0}
-  dialogueSystem: {fileID: 0}
-  successDialogue: []
-  portalObject: {fileID: 0}
-  wallCollider: {fileID: 0}
-  targetSceneName: Id-4
-  fadeDuration: 1
 --- !u!4 &1042099983 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030355175451754405, guid: c6713b7234e1dff469136e750a468ad4, type: 3}
@@ -20558,8 +20664,8 @@ Transform:
   m_GameObject: {fileID: 1347055248}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 84.2, y: 0, z: -0}
+  m_LocalScale: {x: 0.85, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 416066968}
@@ -20722,13 +20828,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1363857826}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.036208645, w: 0.9993443}
-  m_LocalPosition: {x: 61.07999, y: -1.25, z: -5.0000005}
-  m_LocalScale: {x: 36.936745, y: 0.4181159, z: 6.1037}
+  m_LocalRotation: {x: -0.000000005587935, y: -0, z: 0.05874802, w: 0.9982729}
+  m_LocalPosition: {x: 62.370075, y: -2.8600001, z: -5}
+  m_LocalScale: {x: 18.31959, y: 0.4181159, z: 6.1037}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4459568}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.15}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 6.736}
 --- !u!65 &1363857828
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -21860,6 +21966,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 539204167}
   - {fileID: 1755233868}
   - {fileID: 1463224005}
   - {fileID: 83768965}
@@ -22498,10 +22605,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 42.6084, y: 0.05958292, z: 24.208895}
-  m_Center: {x: 16.310339, y: -0.09805672, z: -5.9364624}
+  m_Size: {x: 29.84653, y: 0.05958292, z: 24.208895}
+  m_Center: {x: 9.929403, y: -0.09805672, z: -5.9364624}
 --- !u!1001 &1468766898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26968,14 +27075,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755233867}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 93.37, y: 2.11, z: -4.26}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 758.83, y: 22.29, z: 41.97}
   m_LocalScale: {x: 5.59, y: 5.59, z: 5.59}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1049501328}
   m_Father: {fileID: 1427524653}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &1755233869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26991,6 +27098,8 @@ MonoBehaviour:
   targetSceneIndex: 3
   FintoUI: {fileID: 1368447462}
   interactKey: 102
+  requiredConditions: []
+  blockedDialogue: []
   jumpScript: {fileID: 1925550470}
 --- !u!65 &1755233870
 BoxCollider:
@@ -28049,14 +28158,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862352989}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e58142967a115d849a8393f1258c0a06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectId: "\u6728\u677F1"
+  objectId: overlay_wood
   interactType: 4
-  displayName: "\u53EF\u8986\u76D6"
+  displayName: "\u6728\u677F-\u53EF\u8986\u76D6"
   interactionRange: 3
   showRangeIndicator: 1
   canInteract: 1
@@ -28070,14 +28179,16 @@ MonoBehaviour:
   OnPlayerExitRange:
     m_PersistentCalls:
       m_Calls: []
-  correctPhotoId: 
+  correctPhotoId: wood
   inventoryUI: {fileID: 0}
-  photoDisplayObject: {fileID: 0}
+  photoDisplayObject: {fileID: 1363857826}
+  successRevealObject: {fileID: 0}
+  hideOnSuccessObject: {fileID: 0}
   dialogueSystem: {fileID: 0}
   successDialogue: []
-  portalObject: {fileID: 0}
-  wallCollider: {fileID: 0}
-  targetSceneName: Id-4
+  portalObject: {fileID: 277131030}
+  wallCollider: {fileID: 277131032}
+  targetSceneName: Id-2
   fadeDuration: 1
 --- !u!1001 &1863577758
 PrefabInstance:
@@ -29319,7 +29430,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1925550466
 MonoBehaviour:
   m_ObjectHideFlags: 0

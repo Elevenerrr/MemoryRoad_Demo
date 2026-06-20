@@ -44,6 +44,7 @@ public class CameraFollow : MonoBehaviour
 
         if (target != null)
         {
+            target = GameObject.FindGameObjectWithTag("Player")?.transform;
             distance = Vector3.Distance(transform.position, target.position);
         }
 
@@ -52,6 +53,8 @@ public class CameraFollow : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+
+
     }
 
     void OnDestroy()

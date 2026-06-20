@@ -1,20 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class moveController : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    [Tooltip("移动速度")]
+    public float moveSpeed = 3f;
+
+    [Tooltip("转向平滑度")]
+    public float rotationSpeed = 10f;
 
     PlayerMove inputs;
     Animator animator;
     Rigidbody body;
     Camera mainCamera;
 
-    private Vector3 moveDirection;
-    private Vector3 moveVelocity;
+    Vector3 moveDirection;
+    Vector3 moveVelocity;
+    bool isMovingPrev;
 
-    private void Awake()
+    void Awake()
     {
         inputs = new PlayerMove();
         animator = GetComponent<Animator>();
@@ -28,51 +31,49 @@ public class moveController : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        inputs.Player.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputs.Player.Disable();
-    }
+    void OnEnable() => inputs.Player.Enable();
+    void OnDisable() => inputs.Player.Disable();
 
     void Update()
     {
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;
-            return;
-        }
+        // 传送期间冻结移动输入，防止漂移
+        if (Jump.IsTransitioning) return;
 
-        Vector2 moveInput = inputs.Player.Move.ReadValue<Vector2>();
+        if (!mainCamera) { mainCamera = Camera.main; return; }
 
-        Vector3 cameraForward = mainCamera.transform.forward;
-        Vector3 cameraRight = mainCamera.transform.right;
+        // 读取 WASD 输入
+        Vector2 input = inputs.Player.Move.ReadValue<Vector2>();
 
-        cameraForward.y = 0f;
-        cameraRight.y = 0f;
-        cameraForward.Normalize();
-        cameraRight.Normalize();
-
-        Vector3 worldMoveDirection = cameraForward * moveInput.y + cameraRight * moveInput.x;
-        moveDirection = worldMoveDirection.normalized;
+        // 转换到世界坐标系（相机朝向）
+        Vector3 forward = Vector3.Scale(mainCamera.transform.forward, new Vector3(1, 0, 1)).normalized;
+        Vector3 right = Vector3.Scale(mainCamera.transform.right, new Vector3(1, 0, 1)).normalized;
+        moveDirection = (forward * input.y + right * input.x).normalized;
         moveVelocity = moveDirection * moveSpeed;
 
-        if (moveDirection.magnitude > 0.1f)
+        // 面向移动方向（仅旋转Y轴，不影响FacingCamera）
+        if (moveDirection.sqrMagnitude > 0.01f)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(moveDirection), Time.deltaTime * rotationSpeed);
+
+        // 动画切换：移动→walking / 静止→idle
+        bool isMoving = moveDirection.sqrMagnitude > 0.01f;
+        if (isMoving != isMovingPrev && animator != null)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            if (isMoving) animator.CrossFade("_walking", 0.15f);
+            else animator.CrossFade("Idle", 0.15f);
+            isMovingPrev = isMoving;
         }
     }
 
     void FixedUpdate()
     {
-        if (body != null && moveVelocity != null)
+        // 传送期间完全冻结物理移动
+        if (Jump.IsTransitioning)
         {
-            Vector3 newVelocity = new Vector3(moveVelocity.x, 0, moveVelocity.z);
-            body.velocity = newVelocity;
+            if (body != null) body.velocity = Vector3.zero;
+            return;
         }
+
+        if (body != null)
+            body.velocity = new Vector3(moveVelocity.x, body.velocity.y, moveVelocity.z);
     }
 }

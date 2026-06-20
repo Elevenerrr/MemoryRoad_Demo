@@ -69,7 +69,7 @@ public class Jump : MonoBehaviour
         }
     }
 
-    
+
 
     public void Jump0() { JumpToScene(0); }
     public void Jump1() { JumpToScene(1); }
@@ -96,7 +96,12 @@ public class Jump : MonoBehaviour
         }
     }
 
-    
+
+    /// <summary>
+    /// 场景传送期间是否冻结玩家移动（防止漂移）
+    /// </summary>
+    public static bool IsTransitioning { get; private set; } = false;
+
     // 过渡动画和加载场景的协程
     private IEnumerator TransitionAndLoad(int sceneIndex)
     {
@@ -104,6 +109,9 @@ public class Jump : MonoBehaviour
         {
             print("fadeAnimator 未初始化，无法播放动画！");
         }
+
+        // 标记传送开始，冻结移动
+        IsTransitioning = true;
 
         // 1. 播放 fadein（1秒）
         if (fadeAnimator != null) { fadeAnimator.Play("fadein", 0, 0f); }
@@ -118,7 +126,18 @@ public class Jump : MonoBehaviour
             yield return null;
         // 3. 激活新场景
         asyncLoad.allowSceneActivation = true;
-        
+
+        // 等待场景真正激活（allowSceneActivation 后需要再等一帧）
+        yield return null;
+
+        // 将玩家传送到新场景的出生点
+        TeleportPlayerToSpawnPoint();
+
+        // 等待一帧让物理引擎同步
+        yield return null;
+
+        // 解冻移动
+        IsTransitioning = false;
 
         // 4. 场景已加载完毕，播放 fadeout（1秒）
         if (fadeAnimator != null) { fadeAnimator.Play("fadeout", 0, 0f); }
@@ -126,5 +145,58 @@ public class Jump : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 将玩家传送到当前场景的 PlayerSpawnPoint 位置
+    /// 每个场景中放置一个名为 "PlayerSpawnPoint" 的空物体作为出生点即可
+    /// </summary>
+    private void TeleportPlayerToSpawnPoint()
+    {
+        GameObject spawnPoint = GameObject.Find("PlayerSpawnPoint");
+        if (spawnPoint == null) return; // 没有出生点则不处理
 
+        //GameObject player = GameObject.FindGameObjectWithTag("Player");
+        //if (player == null)
+        //{
+        //    Debug.LogWarning("[Jump] 找到了 PlayerSpawnPoint 但未找到玩家！");
+        //    return;
+        //}
+
+        //Vector3 targetPos = spawnPoint.transform.position;
+
+        //// 使用 Rigidbody 传送（比直接设 transform.position 更可靠）
+        //Rigidbody rb = player.GetComponent<Rigidbody>();
+        //if (rb != null)
+        //{
+        //    rb.velocity = Vector3.zero;
+        //    rb.angularVelocity = Vector3.zero;
+        //    rb.position = targetPos;
+        //    // 强制物理引擎立即同步，避免一帧延迟
+        //    Physics.SyncTransforms();
+        //}
+        //else
+        //{
+        //    player.transform.position = targetPos;
+        //}
+
+        // 瞬移相机到正确位置（避免阻尼平滑导致的视觉偏移）
+        SnapCameraToPlayer();
+
+        //Debug.Log($"[Jump] 玩家已传送到出生点: {targetPos}");
+    }
+
+    /// <summary>
+    /// 瞬移相机到玩家正后方（重置 CameraFollow 的偏移）
+    /// </summary>
+    private void SnapCameraToPlayer()
+    {
+        CameraFollow camFollow = FindObjectOfType<CameraFollow>();
+        if (camFollow != null && camFollow.target != null)
+        {
+            // 直接设置相机位置到目标后方，绕过 Lerp 阻尼
+            Vector3 offset = new Vector3(0, 5, -10);
+            camFollow.transform.position = camFollow.target.position + offset;
+            camFollow.transform.LookAt(camFollow.target);
+            Debug.Log("[Jump] 相机已瞬移到玩家后方");
+        }
+    }
 }

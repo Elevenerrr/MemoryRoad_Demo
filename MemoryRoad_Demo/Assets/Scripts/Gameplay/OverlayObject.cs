@@ -12,6 +12,10 @@ public class OverlayObject : InteractableObject
 
     [Header("Success Settings")]
     public GameObject photoDisplayObject;
+    [Tooltip("谜题成功后显示的对象（如：完全体）")]
+    public GameObject successRevealObject;
+    [Tooltip("谜题成功后隐藏的对象（如：断裂体，会连同子对象一起隐藏）")]
+    public GameObject hideOnSuccessObject;
     public DialogueSystem dialogueSystem;
     public List<DialogueLine> successDialogue;
 
@@ -32,6 +36,8 @@ public class OverlayObject : InteractableObject
 
         if (photoDisplayObject != null)
             photoDisplayObject.SetActive(false);
+        if (successRevealObject != null)
+            successRevealObject.SetActive(false);
         if (portalObject != null)
             portalObject.SetActive(true);
         if (wallCollider != null)
@@ -58,7 +64,7 @@ public class OverlayObject : InteractableObject
     {
         if (inventoryUI == null)
         {
-            inventoryUI = FindObjectOfType<PhotoInventoryUI>();
+            inventoryUI = FindObjectOfType<PhotoInventoryUI>(true);
         }
 
         if (inventoryUI != null)
@@ -119,6 +125,23 @@ public class OverlayObject : InteractableObject
             Debug.Log("[覆盖] 墙壁已可穿越");
         }
 
+        // 显示完全体对象
+        if (successRevealObject != null)
+        {
+            successRevealObject.SetActive(true);
+            Debug.Log($"[覆盖] 显示完全体: {successRevealObject.name}");
+        }
+
+        // 隐藏断裂体对象（连同子对象一起隐藏）
+        if (hideOnSuccessObject != null)
+        {
+            hideOnSuccessObject.SetActive(false);
+            Debug.Log($"[覆盖] 隐藏断裂体: {hideOnSuccessObject.name}");
+        }
+
+        if (dialogueSystem == null)
+            dialogueSystem = FindObjectOfType<DialogueSystem>(true);
+
         if (dialogueSystem != null && successDialogue != null && successDialogue.Count > 0)
         {
             dialogueSystem.ShowDialogue(successDialogue, OnDialogueComplete);
@@ -157,7 +180,7 @@ public class OverlayObject : InteractableObject
 
     void EnterPortal()
     {
-        Debug.Log($"[传送门] 正在切换到场景: {targetSceneName}");
-        SceneManager.LoadScene(targetSceneName);
+        Debug.Log($"[传送门] 正在切换到场景: {targetSceneName},no jump");
+        //SceneManager.LoadScene(targetSceneName);
     }
 }

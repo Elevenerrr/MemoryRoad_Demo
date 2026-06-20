@@ -7,6 +7,9 @@ public class PhoneManager : MonoBehaviour
 {
     public static PhoneManager Instance { get; private set; }
 
+    [Header("手机是否已解锁（交互墓碑后为 true，跨场景持久）")]
+    public static bool isPhoneUnlocked = false;
+
     [Header("Settings")]
     public float autoLockTime = 5f;
     public float interactionDistance = 3f;
@@ -42,6 +45,7 @@ public class PhoneManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        
     }
 
     void Start()
@@ -158,6 +162,10 @@ public class PhoneManager : MonoBehaviour
 
     void TogglePhoneEquip()
     {
+        // 检查手机是否已解锁
+        if (!isPhoneUnlocked)
+            return;
+
         if (isPhoneEquipped && isPhoneActive)
         {
             isPhoneEquipped = false;
