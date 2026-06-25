@@ -5049,7 +5049,7 @@ GameObject:
   - component: {fileID: 704965227}
   - component: {fileID: 704965228}
   m_Layer: 0
-  m_Name: tombstone_FacingCamera
+  m_Name: tombstone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9135,7 +9135,7 @@ MonoBehaviour:
   - speakerName: 
     dialogueText: "\u597D\u50CF\u6F0F\u4E86\u4E9B\u4EC0\u4E48......"
     displayDuration: 2.5
-  jumpScript: {fileID: 1962411}
+  jumpScript: {fileID: 0}
 --- !u!4 &1256315935 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030355175451754405, guid: f3f91778d550da4418dfd42e31078be1, type: 3}

@@ -154,34 +154,34 @@ public class Jump : MonoBehaviour
         GameObject spawnPoint = GameObject.Find("PlayerSpawnPoint");
         if (spawnPoint == null) return; // 没有出生点则不处理
 
-        //GameObject player = GameObject.FindGameObjectWithTag("Player");
-        //if (player == null)
-        //{
-        //    Debug.LogWarning("[Jump] 找到了 PlayerSpawnPoint 但未找到玩家！");
-        //    return;
-        //}
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogWarning("[Jump] 找到了 PlayerSpawnPoint 但未找到玩家！");
+            return;
+        }
 
-        //Vector3 targetPos = spawnPoint.transform.position;
+        Vector3 targetPos = spawnPoint.transform.position;
 
-        //// 使用 Rigidbody 传送（比直接设 transform.position 更可靠）
-        //Rigidbody rb = player.GetComponent<Rigidbody>();
-        //if (rb != null)
-        //{
-        //    rb.velocity = Vector3.zero;
-        //    rb.angularVelocity = Vector3.zero;
-        //    rb.position = targetPos;
-        //    // 强制物理引擎立即同步，避免一帧延迟
-        //    Physics.SyncTransforms();
-        //}
-        //else
-        //{
-        //    player.transform.position = targetPos;
-        //}
+        // 使用 Rigidbody 传送（比直接设 transform.position 更可靠）
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.position = targetPos;
+            // 强制物理引擎立即同步，避免一帧延迟
+            Physics.SyncTransforms();
+        }
+        else
+        {
+            player.transform.position = targetPos;
+        }
 
         // 瞬移相机到正确位置（避免阻尼平滑导致的视觉偏移）
         SnapCameraToPlayer();
 
-        //Debug.Log($"[Jump] 玩家已传送到出生点: {targetPos}");
+        Debug.Log($"[Jump] 玩家已传送到出生点: {targetPos}");
     }
 
     /// <summary>

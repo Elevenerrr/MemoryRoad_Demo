@@ -18,7 +18,7 @@ public class PortalWithPrompt : MonoBehaviour
     public List<DialogueLine> blockedDialogue;
 
     [Header("Jump 引用")]
-    public Jump2 jumpScript;
+    public Jump jumpScript;
 
     private bool isPlayerInRange = false;
     private bool hasTriggered = false;
@@ -37,13 +37,13 @@ public class PortalWithPrompt : MonoBehaviour
 
         if (jumpScript == null)
         {
-            jumpScript = FindObjectOfType<Jump2>();
+            jumpScript = FindObjectOfType<Jump>();
             if (jumpScript == null)
                 Debug.LogWarning("未找到 Jump 脚本，将无法跳转！");
         }
 
         // 自动查找对话系统
-        dialogueSystem = FindObjectOfType<DialogueSystem>();
+        dialogueSystem = FindObjectOfType<DialogueSystem>(true);
 
         if (FintoUI != null)
             FintoUI.SetActive(false);
@@ -69,7 +69,7 @@ public class PortalWithPrompt : MonoBehaviour
             // 条件满足（或无条件），执行跳转
             if (jumpScript != null)
             {
-                jumpScript.JumpToTargetScene(targetSceneIndex);
+                jumpScript.JumpToScene(targetSceneIndex);
                 hasTriggered = true;
                 Debug.Log($"[传送门] 按 {interactKey} 触发跳转到场景 {targetSceneIndex}");
             }
