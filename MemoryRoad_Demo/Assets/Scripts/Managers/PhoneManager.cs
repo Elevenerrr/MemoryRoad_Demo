@@ -309,6 +309,8 @@ public class PhoneManager : MonoBehaviour
             return;
         }
 
+        Debug.Log($"[手机] 覆盖: currentTarget={currentTarget.objectId}, interactType={currentTarget.interactType}");
+
         if (currentTarget.interactType == InteractableType.Overlay)
         {
             currentTarget.OnInteract();
@@ -317,7 +319,7 @@ public class PhoneManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("[手机] 这个物体不能覆盖");
+            Debug.Log($"[手机] 这个物体不能覆盖 (type={currentTarget.interactType})");
         }
     }
 

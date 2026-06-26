@@ -8292,6 +8292,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1137011058
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1137011060}
+  - component: {fileID: 1137011059}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1137011059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137011058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 16646a33e08dd274988a994ff97742f9, type: 2}
+--- !u!4 &1137011060
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1137011058}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.745772, y: -6.076741, z: 25.565603}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1150418102
 GameObject:
   m_ObjectHideFlags: 0
@@ -13777,13 +13826,13 @@ GameObject:
   - component: {fileID: 1830452047}
   - component: {fileID: 1830452046}
   - component: {fileID: 1830452045}
-  - component: {fileID: 1830452044}
   - component: {fileID: 1830452043}
   - component: {fileID: 1830452049}
   - component: {fileID: 1830452050}
   - component: {fileID: 1830452052}
   - component: {fileID: 1830452053}
   - component: {fileID: 1830452054}
+  - component: {fileID: 1830452055}
   m_Layer: 0
   m_Name: GamePlayer
   m_TagString: Player
@@ -13805,29 +13854,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   rotationSpeed: 10
---- !u!136 &1830452044
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1830452042}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1.6434579
-  m_Height: 12.966702
-  m_Direction: 1
-  m_Center: {x: -0.75980157, y: 5.126192, z: -0.3865381}
 --- !u!54 &1830452045
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14035,7 +14061,7 @@ MonoBehaviour:
     isCorrectPhoto: 1
   - objectId: wood
     displayName: "\u6728\u677F-\u7B2C\u4E8C\u5173\u83B7\u53D6-\u63D0\u4F9B\u884C\u8D70"
-    photoSprite: {fileID: -1240040099, guid: 05c2e88f69d762647ae4c846c7a0afb9, type: 3}
+    photoSprite: {fileID: 21300000, guid: 7938cd1a0632b244f857f33c6cb65c41, type: 3}
     isCorrectPhoto: 1
   - objectId: wind
     displayName: "\u98CE-\u7B2C\u56DB\u5173\u83B7\u53D6-\u79FB\u52A8\u6321\u8DEF\u6728\u677F"
@@ -14061,6 +14087,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e4c9c2bd959014c8e8e246ca025dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &1830452055
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830452042}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.7420974, y: 14.841428, z: 0.21705362}
+  m_Center: {x: -0.8856783, y: 6.370288, z: -0.010279814}
 --- !u!4 &1834815678 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1030355175451754405, guid: f3f91778d550da4418dfd42e31078be1, type: 3}
@@ -16237,3 +16284,4 @@ SceneRoots:
   - {fileID: 2069346505}
   - {fileID: 1600779180}
   - {fileID: 1830452048}
+  - {fileID: 1137011060}

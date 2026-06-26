@@ -48,7 +48,11 @@ public class InteractableObject : MonoBehaviour
 
     void Update()
     {
-        if (playerTransform == null) return;
+        if (playerTransform == null)
+        {
+            playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform;
+            if (playerTransform == null) return;
+        }
 
         float distance = Vector3.Distance(transform.position, playerTransform.position);
         bool wasInRange = isPlayerInRange;

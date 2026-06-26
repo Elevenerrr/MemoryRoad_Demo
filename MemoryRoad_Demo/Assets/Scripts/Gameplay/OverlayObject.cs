@@ -65,10 +65,16 @@ public class OverlayObject : InteractableObject
         if (inventoryUI == null)
         {
             inventoryUI = FindObjectOfType<PhotoInventoryUI>(true);
+            Debug.Log($"[覆盖] inventoryUI 为空，兜底查找结果: {(inventoryUI != null ? inventoryUI.gameObject.name : "null")}");
         }
 
         if (inventoryUI != null)
         {
+            if (PhoneManager.Instance == null)
+            {
+                Debug.LogError("[覆盖] PhoneManager.Instance 为 null！");
+                return;
+            }
             PhoneManager.Instance.OpenInventory();
             inventoryUI.ShowInventory(this);
             Debug.Log("[覆盖] 打开照片背包");
